@@ -68,12 +68,19 @@ CREATE TABLE IF NOT EXISTS metricas_periodo (
   UNIQUE (id_periodo, id_subsistema)
 );
 
+-- Delete obsolete subsystem AC references before insert/update to prevent FK constraint errors
+DELETE FROM eventos_operacionales WHERE id_subsistema = 'AC';
+DELETE FROM metricas_periodo WHERE id_subsistema = 'AC';
+DELETE FROM subsistemas WHERE id = 'AC';
+
 INSERT INTO subsistemas (id, nombre, configuracion_queues, capacidad_servidores)
 VALUES
   ('SC', 'Entrada', 'M/M/2', 2),
   ('BC1', 'Banos 1', 'M/M/7', 7),
   ('BC2', 'Banos 2', 'M/M/7', 7),
-  ('AC', 'Guardarropa', 'M/M/3', 3),
+  ('AC1', 'Guardarropa 1', 'M/M/1', 1),
+  ('AC2', 'Guardarropa 2', 'M/M/1', 1),
+  ('AC3', 'Guardarropa 3', 'M/M/1', 1),
   ('DC', 'Pista de baile', 'M/M/inf', 0),
   ('CC1', 'Barra 1', 'M/M/1', 1),
   ('CC2', 'Barra 2', 'M/M/1', 1),
