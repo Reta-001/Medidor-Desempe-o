@@ -6,16 +6,18 @@ interface ControlBarProps {
   onStart: () => void;
   onStop: () => void;
   busy: boolean;
+  realtimeStatus: string;
+  ready: boolean;
 }
 
-export function ControlBar({ period, onStart, onStop, busy }: ControlBarProps) {
+export function ControlBar({ period, onStart, onStop, busy, realtimeStatus, ready }: ControlBarProps) {
   return (
     <section className="border-b border-line bg-white">
-      <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3">
         <button
           type="button"
           onClick={onStart}
-          disabled={busy || period?.estado === "ACTIVO"}
+          disabled={busy || !ready || period?.estado === "ACTIVO"}
           className="inline-flex h-10 items-center gap-2 rounded-md bg-action px-4 text-sm font-semibold text-white shadow-sm disabled:cursor-not-allowed disabled:bg-slate-300"
           title="Iniciar periodo"
         >
@@ -25,7 +27,7 @@ export function ControlBar({ period, onStart, onStop, busy }: ControlBarProps) {
         <button
           type="button"
           onClick={onStop}
-          disabled={busy || period?.estado !== "ACTIVO"}
+          disabled={busy || !ready || period?.estado !== "ACTIVO"}
           className="inline-flex h-10 items-center gap-2 rounded-md bg-stop px-4 text-sm font-semibold text-white shadow-sm disabled:cursor-not-allowed disabled:bg-slate-300"
           title="Detener y exportar"
         >
@@ -35,6 +37,9 @@ export function ControlBar({ period, onStart, onStop, busy }: ControlBarProps) {
         <div className="inline-flex h-10 items-center gap-2 rounded-md border border-line bg-panel px-3 text-sm text-slate-700">
           <RefreshCw size={16} />
           {period?.estado === "ACTIVO" ? "Periodo activo" : "Sin periodo activo"}
+        </div>
+        <div className="inline-flex h-10 items-center rounded-md border border-line bg-white px-3 text-sm font-semibold text-slate-600">
+          Realtime: {realtimeStatus}
         </div>
       </div>
     </section>

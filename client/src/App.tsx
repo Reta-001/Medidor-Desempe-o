@@ -1,125 +1,239 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AlertTriangle, Activity } from "lucide-react";
 import { ControlBar } from "./components/ControlBar";
 import { MetricsTable } from "./components/MetricsTable";
 import { SubsystemPool } from "./components/SubsystemPool";
 import { PeriodHistory } from "./components/PeriodHistory";
 import { api } from "./lib/api";
-import type { MetricsSnapshot, Period, Subsystem, PeriodSummary } from "./types/domain";
+import { buildPoolsBySubsystem } from "./lib/poolState";
+import { computeMetricsSnapshot, emptyMetricsSnapshot } from "./lib/operationalMath";
+import type {
+  MetricsSnapshot,
+  OperationalEventRow,
+  Period,
+  PeriodSummary,
+  Subsystem
+} from "./types/domain";
 
 export default function App() {
   const [subsystems, setSubsystems] = useState<Subsystem[]>([]);
   const [period, setPeriod] = useState<Period | null>(null);
-  const [snapshot, setSnapshot] = useState<MetricsSnapshot>({
-    period: null,
-    subsystemMetrics: [],
-    globalMetric: null
-  });
+  const [events, setEvents] = useState<OperationalEventRow[]>([]);
+  const [snapshot, setSnapshot] = useState<MetricsSnapshot>(emptyMetricsSnapshot());
   const [periods, setPeriods] = useState<PeriodSummary[]>([]);
   const [stoppedSnapshot, setStoppedSnapshot] = useState<MetricsSnapshot | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [realtimeStatus, setRealtimeStatus] = useState(api.isConfigured ? "CONECTANDO" : "SIN CONFIG");
+
+  const pools = useMemo(
+    () => buildPoolsBySubsystem(subsystems, events),
+    [subsystems, events]
+  );
 
   const loadHistory = useCallback(async () => {
+    if (!api.isConfigured) {
+      return;
+    }
+
     try {
-      const history = await api.getPeriods();
-      setPeriods(history);
+      setPeriods(await api.getPeriods());
     } catch (err) {
       console.error("Error al cargar el historial:", err);
     }
   }, []);
 
-  const refreshMetrics = useCallback(async () => {
+  const refreshLiveState = useCallback(async () => {
+    if (!api.isConfigured) {
+      return;
+    }
+
     try {
-      const metrics = await api.getCurrentMetrics();
-      setSnapshot(metrics);
-      if (metrics.period) {
-        setPeriod(metrics.period);
-      }
+      const live = await api.getLiveState();
+      setPeriod(live.period);
+      setEvents(live.events);
     } catch (requestError) {
       setError(requestError instanceof Error ? requestError.message : String(requestError));
     }
   }, []);
 
-  // Initial load
   useEffect(() => {
     let mounted = true;
-    Promise.all([api.getSubsystems(), api.getCurrentPeriod(), api.getCurrentMetrics(), api.getPeriods()])
-      .then(([loadedSubsystems, currentPeriod, metrics, history]) => {
+
+    api.getSubsystems()
+      .then((loadedSubsystems) => {
         if (!mounted) return;
         setSubsystems(loadedSubsystems);
-        setPeriod(currentPeriod);
-        setSnapshot(metrics);
+      })
+      .catch((err) => {
+        setError(err instanceof Error ? err.message : String(err));
+      });
+
+    if (!api.isConfigured) {
+      setError(
+        "Faltan VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY. Configuralas en Vercel o en client/.env."
+      );
+      return () => {
+        mounted = false;
+      };
+    }
+
+    api.syncServerTime()
+      .then(() => {
+        if (!mounted) return;
+        return Promise.all([api.getLiveState(), api.getPeriods()]);
+      })
+      .then((results) => {
+        if (!mounted || !results) return;
+        const [live, history] = results;
+        setPeriod(live.period);
+        setEvents(live.events);
         setPeriods(history);
       })
       .catch((err) => {
         setError(err instanceof Error ? err.message : String(err));
       });
+
     return () => {
       mounted = false;
     };
   }, []);
 
-  // Auto-refresh every 1s when period is active
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (period?.estado === "ACTIVO") {
-        void refreshMetrics();
+    if (!api.isConfigured) {
+      return;
+    }
+
+    let refreshTimeout: number | null = null;
+    const refreshEverything = () => {
+      if (refreshTimeout !== null) {
+        window.clearTimeout(refreshTimeout);
       }
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [period, refreshMetrics]);
+      refreshTimeout = window.setTimeout(() => {
+        void refreshLiveState();
+        void loadHistory();
+      }, 120);
+    };
+
+    const unsubscribe = api.subscribeLiveChanges(refreshEverything, setRealtimeStatus);
+    return () => {
+      if (refreshTimeout !== null) {
+        window.clearTimeout(refreshTimeout);
+      }
+      unsubscribe();
+    };
+  }, [loadHistory, refreshLiveState]);
+
+  useEffect(() => {
+    if (!period || subsystems.length === 0) {
+      setSnapshot(emptyMetricsSnapshot());
+      return;
+    }
+
+    const compute = () => {
+      setSnapshot(computeMetricsSnapshot(period, subsystems, events, api.getServerTime()));
+    };
+
+    compute();
+    if (period.estado !== "ACTIVO") {
+      return;
+    }
+
+    const interval = window.setInterval(compute, 1000);
+    return () => window.clearInterval(interval);
+  }, [events, period, subsystems]);
 
   const start = useCallback(async () => {
     setBusy(true);
     setError(null);
-    setStoppedSnapshot(null); // Clear previous summary when starting new period
+    setStoppedSnapshot(null);
     try {
       const next = await api.startPeriod();
       setPeriod(next);
-      await refreshMetrics();
+      setEvents([]);
+      await refreshLiveState();
+      void loadHistory();
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setBusy(false);
     }
-  }, [refreshMetrics]);
+  }, [loadHistory, refreshLiveState]);
 
   const stop = useCallback(async () => {
+    if (!period || period.estado !== "ACTIVO") {
+      return;
+    }
+
     setBusy(true);
     setError(null);
     try {
-      const stopped = await api.stopPeriod();
-      setPeriod(stopped.period);
-      setSnapshot(stopped);
-      setStoppedSnapshot(stopped); // Show summary
-      void loadHistory(); // Refresh history list
+      const stoppedAt = api.getServerTime();
+      const finalSnapshot = computeMetricsSnapshot(
+        { ...period, estado: "CERRADO", timestamp_fin: stoppedAt },
+        subsystems,
+        events,
+        stoppedAt
+      );
+      const stopped = await api.stopPeriod(finalSnapshot, stoppedAt);
+      setStoppedSnapshot(stopped);
+      setPeriod(null);
+      setEvents([]);
+      await refreshLiveState();
+      void loadHistory();
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setBusy(false);
     }
-  }, [loadHistory]);
+  }, [events, loadHistory, period, refreshLiveState, subsystems]);
 
-  const deletePeriod = useCallback(async (periodId: string) => {
-    setError(null);
-    try {
-      await api.deletePeriod(periodId);
-      void loadHistory();
-      if (stoppedSnapshot?.period?.id_periodo === periodId) {
-        setStoppedSnapshot(null);
+  const recordArrival = useCallback(
+    async (subsystemId: string) => {
+      await api.recordArrival(subsystemId);
+      await refreshLiveState();
+    },
+    [refreshLiveState]
+  );
+
+  const recordDeparture = useCallback(
+    async (subsystemId: string) => {
+      await api.recordDeparture(subsystemId);
+      await refreshLiveState();
+    },
+    [refreshLiveState]
+  );
+
+  const deleteSubsystemEvents = useCallback(
+    async (subsystemId: string) => {
+      await api.deleteSubsystemEvents(subsystemId);
+      await refreshLiveState();
+    },
+    [refreshLiveState]
+  );
+
+  const deletePeriod = useCallback(
+    async (periodId: string) => {
+      setError(null);
+      try {
+        await api.deletePeriod(periodId);
+        void loadHistory();
+        if (stoppedSnapshot?.period?.id_periodo === periodId) {
+          setStoppedSnapshot(null);
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    }
-  }, [loadHistory, stoppedSnapshot]);
+    },
+    [loadHistory, stoppedSnapshot]
+  );
 
-  const disabled = period?.estado !== "ACTIVO" || busy;
+  const disabled = period?.estado !== "ACTIVO" || busy || !api.isConfigured;
 
   return (
-    <main className="min-h-screen bg-[#eef2f6] text-ink pb-12">
+    <main className="min-h-screen bg-[#eef2f6] pb-12 text-ink">
       <header className="border-b border-line bg-ink text-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4">
           <div className="flex items-center gap-3">
             <Activity size={26} />
             <div>
@@ -127,8 +241,10 @@ export default function App() {
               <p className="text-sm font-medium text-slate-300">Eventos discretos / PROMODEL</p>
             </div>
           </div>
-          <div className="text-sm font-semibold text-slate-300">
-            {period?.estado === "ACTIVO" ? `Periodo activo · ${subsystems.length} subsistemas` : "Sin periodo activo"}
+          <div className="text-right text-sm font-semibold text-slate-300">
+            {period?.estado === "ACTIVO"
+              ? `Periodo activo · ${subsystems.length} subsistemas`
+              : "Sin periodo activo"}
           </div>
         </div>
       </header>
@@ -138,6 +254,8 @@ export default function App() {
         onStart={start}
         onStop={stop}
         busy={busy}
+        realtimeStatus={realtimeStatus}
+        ready={api.isConfigured}
       />
 
       {error ? (
@@ -147,54 +265,55 @@ export default function App() {
         </div>
       ) : null}
 
-      {/* All subsystem pools */}
       <section className="mx-auto max-w-7xl px-4 py-4">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {subsystems.map((subsystem) => (
             <SubsystemPool
               key={subsystem.id}
               subsystem={subsystem}
+              pool={pools[subsystem.id] ?? []}
               disabled={disabled}
+              onArrival={recordArrival}
+              onDeparture={recordDeparture}
+              onDelete={deleteSubsystemEvents}
             />
           ))}
         </div>
       </section>
 
-      {/* Live metrics shown only when period is active */}
       {period?.estado === "ACTIVO" && (
         <MetricsTable
           metrics={snapshot.subsystemMetrics}
           globalMetric={snapshot.globalMetric}
-          periodStartMs={period?.timestamp_inicio ?? null}
+          periodStartMs={period.timestamp_inicio}
           periodActive={true}
         />
       )}
 
-      {/* Stopped metrics summary display */}
       {stoppedSnapshot && (
         <section className="mx-auto max-w-7xl px-4 py-4">
-          <div className="rounded-lg border border-emerald-300 bg-emerald-50/40 p-6 shadow-sm relative overflow-hidden">
-            <div className="absolute top-0 right-0 left-0 h-1 bg-emerald-500"></div>
-            <div className="flex items-center justify-between mb-4">
+          <div className="relative overflow-hidden rounded-lg border border-emerald-300 bg-emerald-50/40 p-6 shadow-sm">
+            <div className="absolute left-0 right-0 top-0 h-1 bg-emerald-500" />
+            <div className="mb-4 flex items-center justify-between gap-4">
               <div>
                 <span className="inline-flex items-center gap-1 rounded bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-800">
                   Resumen de la Medición Guardada
                 </span>
-                <h2 className="text-xl font-bold text-ink mt-2">
+                <h2 className="mt-2 text-xl font-bold text-ink">
                   {stoppedSnapshot.period?.nombre || "Medición Finalizada con Éxito"}
                 </h2>
               </div>
               <button
                 type="button"
                 onClick={() => setStoppedSnapshot(null)}
-                className="text-slate-500 hover:text-slate-700 font-bold text-sm bg-white border border-line rounded px-3 py-1.5 shadow-xs transition-colors"
+                className="rounded border border-line bg-white px-3 py-1.5 text-sm font-bold text-slate-500 shadow-sm transition-colors hover:text-slate-700"
               >
-                ✕ Cerrar Resumen
+                Cerrar Resumen
               </button>
             </div>
-            
-            <p className="mb-4 text-sm text-slate-600 font-medium">
-              Se han registrado y persistido todas las métricas de rendimiento en la base de datos PostgreSQL.
+
+            <p className="mb-4 text-sm font-medium text-slate-600">
+              Se han registrado y persistido todas las métricas de rendimiento en Supabase/PostgreSQL.
             </p>
 
             <MetricsTable
@@ -207,11 +326,7 @@ export default function App() {
         </section>
       )}
 
-      {/* Measurement History Section */}
-      <PeriodHistory
-        periods={periods}
-        onDelete={deletePeriod}
-      />
+      <PeriodHistory periods={periods} onDelete={deletePeriod} />
     </main>
   );
 }

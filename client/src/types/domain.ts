@@ -50,6 +50,23 @@ export interface EventPayload {
   timestamp: number;
 }
 
+export interface OperationalEventRow {
+  id: number;
+  id_subsistema: string;
+  id_entidad: string;
+  tipo_evento: EventType;
+  timestamp_milisegundos: number;
+  id_periodo: string | null;
+  created_at?: string;
+}
+
+export interface PoolEntity {
+  id: string;
+  arrivalTime: number;
+  startServiceTime: number | null;
+  status: "queue" | "in_service";
+}
+
 export interface PeriodSummary {
   id_periodo: string;
   nombre: string | null;

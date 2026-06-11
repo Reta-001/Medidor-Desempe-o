@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Metric } from "../types/domain";
+import { api } from "../lib/api";
 
 interface MetricsTableProps {
   metrics: Metric[];
@@ -37,10 +38,10 @@ export function MetricsTable({ metrics, globalMetric, periodStartMs, periodActiv
   const rows = globalMetric ? [...metrics, globalMetric] : metrics;
 
   // Live stopwatch tick every 50ms for smooth millisecond display
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(api.getServerTime());
   useEffect(() => {
     if (!periodActive || periodStartMs === null) return;
-    const interval = setInterval(() => setNow(Date.now()), 50);
+    const interval = setInterval(() => setNow(api.getServerTime()), 50);
     return () => clearInterval(interval);
   }, [periodActive, periodStartMs]);
 

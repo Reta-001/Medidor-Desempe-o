@@ -8,8 +8,11 @@
     "client"
   ],
   "scripts": {
-    "dev": "concurrently -n API,SPA -c cyan,magenta \"npm:dev --workspace server\" \"npm:dev --workspace client\"",
-    "build": "npm run build --workspaces",
+    "dev": "npm run dev --workspace client",
+    "build": "npm run build --workspace client",
+    "preview": "npm run preview --workspace client",
+    "dev:legacy-server": "concurrently -n API,SPA -c cyan,magenta \"npm:dev --workspace server\" \"npm:dev --workspace client\"",
+    "build:legacy-server": "npm run build --workspaces",
     "db:migrate": "npm --workspace server run db:migrate",
     "mcp": "npm --workspace server run mcp",
     "test": "npm run test --workspaces --if-present"
