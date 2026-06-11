@@ -192,19 +192,19 @@ function computeMetricForEvents(
     nombre: definition.name,
     configuracion_queues: definition.queueModel,
     capacidad_servidores: definition.servers,
-    tiempo_observacion_T: roundMetric(periodSeconds) ?? periodSeconds,
-    total_A: totalA,
-    total_C: totalC,
-    tiempo_ocupado_B: roundMetric(busySeconds) ?? busySeconds,
+    tiempo_observacion_t: roundMetric(periodSeconds) ?? periodSeconds,
+    total_a: totalA,
+    total_c: totalC,
+    tiempo_ocupado_b: roundMetric(busySeconds) ?? busySeconds,
     tasa_llegada_lambda: roundMetric(lambda) ?? lambda,
-    tiempo_servicio_S: roundMetric(serviceTime),
+    tiempo_servicio_s: roundMetric(serviceTime),
     tasa_servicio_mu: roundMetric(serviceRate),
-    utilizacion_U: roundMetric(utilization),
-    throughput_X: roundMetric(throughput) ?? throughput,
-    Lq_promedio_cola: roundMetric(lq) ?? lq,
-    Wq_tiempo_espera_cola: roundMetric(wq) ?? wq,
-    L_promedio_sistema: roundMetric(l) ?? l,
-    W_tiempo_sistema: roundMetric(w) ?? w
+    utilizacion_u: roundMetric(utilization),
+    throughput_x: roundMetric(throughput) ?? throughput,
+    lq_promedio_cola: roundMetric(lq) ?? lq,
+    wq_tiempo_espera_cola: roundMetric(wq) ?? wq,
+    l_promedio_sistema: roundMetric(l) ?? l,
+    w_tiempo_sistema: roundMetric(w) ?? w
   };
 }
 

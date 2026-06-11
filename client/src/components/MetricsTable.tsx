@@ -72,7 +72,7 @@ export function MetricsTable({ metrics, globalMetric, periodStartMs, periodActiv
                   {formatStopwatch(
                     periodActive && periodStartMs !== null
                       ? now - periodStartMs
-                      : metric.tiempo_observacion_T * 1000
+                      : metric.tiempo_observacion_t * 1000
                   )}
                 </td>
                 <td className="px-3 py-2">{formatRate(metric.tasa_llegada_lambda)}</td>

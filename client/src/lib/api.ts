@@ -46,8 +46,8 @@ function mapEvent(row: Record<string, unknown>): OperationalEventRow {
 function mapMetric(row: Record<string, unknown>): PeriodSummary["metricas"][number] {
   return {
     id_subsistema: String(row.id_subsistema),
-    tiempo_observacion_T: Number(row.tiempo_observacion_T),
-    total_A: Number(row.total_A),
+    tiempo_observacion_t: Number(row.tiempo_observacion_t),
+    total_a: Number(row.total_a),
     tasa_llegada_lambda: Number(row.tasa_llegada_lambda),
     tasa_servicio_mu: row.tasa_servicio_mu === null ? null : Number(row.tasa_servicio_mu)
   };
@@ -57,19 +57,19 @@ function metricToRow(periodId: string, metric: Metric) {
   return {
     id_periodo: periodId,
     id_subsistema: metric.id_subsistema,
-    tiempo_observacion_T: metric.tiempo_observacion_T,
-    total_A: metric.total_A,
-    total_C: metric.total_C,
-    tiempo_ocupado_B: metric.tiempo_ocupado_B,
+    tiempo_observacion_t: metric.tiempo_observacion_t,
+    total_a: metric.total_a,
+    total_c: metric.total_c,
+    tiempo_ocupado_b: metric.tiempo_ocupado_b,
     tasa_llegada_lambda: metric.tasa_llegada_lambda,
-    tiempo_servicio_S: metric.tiempo_servicio_S,
+    tiempo_servicio_s: metric.tiempo_servicio_s,
     tasa_servicio_mu: metric.tasa_servicio_mu,
-    utilizacion_U: metric.utilizacion_U,
-    throughput_X: metric.throughput_X,
-    Lq_promedio_cola: metric.Lq_promedio_cola,
-    Wq_tiempo_espera_cola: metric.Wq_tiempo_espera_cola,
-    L_promedio_sistema: metric.L_promedio_sistema,
-    W_tiempo_sistema: metric.W_tiempo_sistema
+    utilizacion_u: metric.utilizacion_u,
+    throughput_x: metric.throughput_x,
+    lq_promedio_cola: metric.lq_promedio_cola,
+    wq_tiempo_espera_cola: metric.wq_tiempo_espera_cola,
+    l_promedio_sistema: metric.l_promedio_sistema,
+    w_tiempo_sistema: metric.w_tiempo_sistema
   };
 }
 
@@ -245,7 +245,7 @@ export const api = {
     const { data, error } = await supabase
       .from("periodos_observacion")
       .select(
-        "id_periodo,nombre,timestamp_inicio,timestamp_fin,estado,metricas_periodo(id_subsistema,tiempo_observacion_T,total_A,tasa_llegada_lambda,tasa_servicio_mu)"
+        "id_periodo,nombre,timestamp_inicio,timestamp_fin,estado,metricas_periodo(id_subsistema,tiempo_observacion_t,total_a,tasa_llegada_lambda,tasa_servicio_mu)"
       )
       .order("timestamp_inicio", { ascending: false });
     assertNoError(error);

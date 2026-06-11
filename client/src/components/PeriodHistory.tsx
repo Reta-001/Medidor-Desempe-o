@@ -75,7 +75,7 @@ export function PeriodHistory({ periods, onDelete }: PeriodHistoryProps) {
           // Calculate total duration from the global metric if present, or from timestamps
           const globalMetric = period.metricas.find((m) => m.id_subsistema === "GLOBAL");
           const durationSeconds = globalMetric
-            ? globalMetric.tiempo_observacion_T
+            ? globalMetric.tiempo_observacion_t
             : period.timestamp_fin && period.timestamp_inicio
             ? (period.timestamp_fin - period.timestamp_inicio) / 1000
             : 0;
@@ -83,7 +83,7 @@ export function PeriodHistory({ periods, onDelete }: PeriodHistoryProps) {
           // Number of events (sum of A across all subsystems except global)
           const totalEvents = period.metricas
             .filter((m) => m.id_subsistema !== "GLOBAL")
-            .reduce((sum, m) => sum + m.total_A, 0);
+            .reduce((sum, m) => sum + m.total_a, 0);
 
           return (
             <div
@@ -189,7 +189,7 @@ export function PeriodHistory({ periods, onDelete }: PeriodHistoryProps) {
                               {metric.id_subsistema === "GLOBAL" ? "GLOBAL" : metric.id_subsistema}
                             </td>
                             <td className="px-4 py-2.5 font-mono">
-                              {formatDuration(metric.tiempo_observacion_T)}
+                              {formatDuration(metric.tiempo_observacion_t)}
                             </td>
                             <td className="px-4 py-2.5">
                               {formatRate(metric.tasa_llegada_lambda)}

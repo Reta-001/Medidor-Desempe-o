@@ -21,19 +21,19 @@ export interface Metric {
   nombre: string;
   configuracion_queues: string;
   capacidad_servidores: number;
-  tiempo_observacion_T: number;
-  total_A: number;
-  total_C: number;
-  tiempo_ocupado_B: number;
+  tiempo_observacion_t: number;
+  total_a: number;
+  total_c: number;
+  tiempo_ocupado_b: number;
   tasa_llegada_lambda: number;
-  tiempo_servicio_S: number | null;
+  tiempo_servicio_s: number | null;
   tasa_servicio_mu: number | null;
-  utilizacion_U: number | null;
-  throughput_X: number;
-  Lq_promedio_cola: number;
-  Wq_tiempo_espera_cola: number;
-  L_promedio_sistema: number;
-  W_tiempo_sistema: number;
+  utilizacion_u: number | null;
+  throughput_x: number;
+  lq_promedio_cola: number;
+  wq_tiempo_espera_cola: number;
+  l_promedio_sistema: number;
+  w_tiempo_sistema: number;
 }
 
 export interface MetricsSnapshot {
@@ -75,8 +75,8 @@ export interface PeriodSummary {
   estado: "ACTIVO" | "CERRADO";
   metricas: {
     id_subsistema: string;
-    tiempo_observacion_T: number;
-    total_A: number;
+    tiempo_observacion_t: number;
+    total_a: number;
     tasa_llegada_lambda: number;
     tasa_servicio_mu: number | null;
   }[];
