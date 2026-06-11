@@ -5,7 +5,7 @@ dist/
 .vite/
 coverage/
 *.log
-exports/
+/exports/
 DB_CREDENTIALS.md
 DB_credenciales*
 db.md
