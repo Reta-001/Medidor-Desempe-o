@@ -1,0 +1,519 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\title{Ecuaciones por Subsistema — Sistema de Cola M/M/c}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Subsistema 1 — Entrada ($S_C$) — M/M/2}
+
+% Ecuación 1.1 — Factor de utilización del sistema
+\[
+\rho_{S_C} = \frac{\lambda_{S_C}}{c \cdot \mu_{S_C}} \tag{1.1}
+\]
+
+% Ecuación 1.2 — Probabilidad de que el sistema esté vacío
+\[
+P_0^{S_C} = \left[ \sum_{n=0}^{c-1} \frac{(c\rho_{S_C})^n}{n!} + \sum_{n=c}^{K} \frac{(c\rho_{S_C})^c}{c!} \cdot \rho_{S_C}^{n-c} \right]^{-1} \tag{1.2}
+\]
+
+% Ecuación 1.3 — Probabilidad de tener n clientes (n < c)
+\[
+P_n^{S_C} = \frac{(c\rho_{S_C})^n}{n!} \cdot P_0^{S_C} \quad \text{para } 0 \leq n < c \tag{1.3}
+\]
+
+% Ecuación 1.4 — Probabilidad de tener n clientes (n ≥ c)
+\[
+P_n^{S_C} = \frac{(c\rho_{S_C})^c}{c!} \cdot \rho_{S_C}^{n-c} \cdot P_0^{S_C} \quad \text{para } c \leq n \leq K \tag{1.4}
+\]
+
+% Ecuación 1.5 — Probabilidad de bloqueo o sistema lleno
+\[
+P_K^{S_C} = \frac{(c\rho_{S_C})^K}{c! \cdot c^{K-c}} \cdot P_0^{S_C} \tag{1.5}
+\]
+
+% Ecuación 1.6 — Tasa efectiva de llegada
+\[
+\lambda_{\text{ef}}^{S_C} = \lambda_{S_C} \cdot (1 - P_K^{S_C}) \tag{1.6}
+\]
+
+% Ecuación 1.7 — Número promedio de clientes en el sistema
+\[
+L_s^{S_C} = \sum_{n=1}^{K} n \cdot P_n^{S_C} \tag{1.7}
+\]
+
+% Ecuación 1.8 — Número promedio de servidores ocupados
+\[
+c_{\text{ocupados}}^{S_C} = \frac{\lambda_{\text{ef}}^{S_C}}{\mu_{S_C}} \tag{1.8}
+\]
+
+% Ecuación 1.9 — Número promedio de clientes en la cola (balance por componentes)
+\[
+L_q^{S_C} = L_s^{S_C} - \frac{\lambda_{\text{ef}}^{S_C}}{\mu_{S_C}} \tag{1.9}
+\]
+
+% Ecuación 1.10 — Relación directa de clientes en cola
+\[
+L_q^{S_C} = \sum_{n=c}^{K} (n - c) \cdot P_n^{S_C} \tag{1.10}
+\]
+
+% Ecuación 1.11 — Tiempo promedio de espera en la cola
+\[
+W_q^{S_C} = \frac{L_q^{S_C}}{\lambda_{\text{ef}}^{S_C}} \tag{1.11}
+\]
+
+% Ecuación 1.12 — Tiempo promedio total en el sistema
+\[
+W_s^{S_C} = W_q^{S_C} + \frac{1}{\mu_{S_C}} \tag{1.12}
+\]
+
+\vspace{1cm}
+\section*{Subsistema 2 — Baños ($B_C$) — M/M/7}
+
+% Ecuación 2.1
+\[
+\text{[Escribir aquí]} \tag{2.1}
+\]
+
+% Ecuación 2.2
+\[
+\text{[Escribir aquí]} \tag{2.2}
+\]
+
+% Ecuación 2.3
+\[
+\text{[Escribir aquí]} \tag{2.3}
+\]
+
+% Ecuación 2.4
+\[
+\text{[Escribir aquí]} \tag{2.4}
+\]
+
+% Ecuación 2.5
+\[
+\text{[Escribir aquí]} \tag{2.5}
+\]
+
+% Ecuación 2.6
+\[
+\text{[Escribir aquí]} \tag{2.6}
+\]
+
+% Ecuación 2.7
+\[
+\text{[Escribir aquí]} \tag{2.7}
+\]
+
+% Ecuación 2.8
+\[
+\text{[Escribir aquí]} \tag{2.8}
+\]
+
+% Ecuación 2.9
+\[
+\text{[Escribir aquí]} \tag{2.9}
+\]
+
+% Ecuación 2.10
+\[
+\text{[Escribir aquí]} \tag{2.10}
+\]
+
+% Ecuación 2.11
+\[
+\text{[Escribir aquí]} \tag{2.11}
+\]
+
+% Ecuación 2.12
+\[
+\text{[Escribir aquí]} \tag{2.12}
+\]
+
+\vspace{1cm}
+\section*{Subsistema 3 — Baños ($B_C 2$) — M/M/7}
+
+% Ecuación 3.1
+\[
+\text{[Escribir aquí]} \tag{3.1}
+\]
+
+% Ecuación 3.2
+\[
+\text{[Escribir aquí]} \tag{3.2}
+\]
+
+% Ecuación 3.3
+\[
+\text{[Escribir aquí]} \tag{3.3}
+\]
+
+% Ecuación 3.4
+\[
+\text{[Escribir aquí]} \tag{3.4}
+\]
+
+% Ecuación 3.5
+\[
+\text{[Escribir aquí]} \tag{3.5}
+\]
+
+% Ecuación 3.6
+\[
+\text{[Escribir aquí]} \tag{3.6}
+\]
+
+% Ecuación 3.7
+\[
+\text{[Escribir aquí]} \tag{3.7}
+\]
+
+% Ecuación 3.8
+\[
+\text{[Escribir aquí]} \tag{3.8}
+\]
+
+% Ecuación 3.9
+\[
+\text{[Escribir aquí]} \tag{3.9}
+\]
+
+% Ecuación 3.10
+\[
+\text{[Escribir aquí]} \tag{3.10}
+\]
+
+% Ecuación 3.11
+\[
+\text{[Escribir aquí]} \tag{3.11}
+\]
+
+% Ecuación 3.12
+\[
+\text{[Escribir aquí]} \tag{3.12}
+\]
+
+\vspace{1cm}
+\section*{Subsistema 4 — Guardarropa ($A_C$) — M/M/3}
+
+% Ecuación 4.1
+\[
+\text{[Escribir aquí]} \tag{4.1}
+\]
+
+% Ecuación 4.2
+\[
+\text{[Escribir aquí]} \tag{4.2}
+\]
+
+% Ecuación 4.3
+\[
+\text{[Escribir aquí]} \tag{4.3}
+\]
+
+% Ecuación 4.4
+\[
+\text{[Escribir aquí]} \tag{4.4}
+\]
+
+% Ecuación 4.5
+\[
+\text{[Escribir aquí]} \tag{4.5}
+\]
+
+% Ecuación 4.6
+\[
+\text{[Escribir aquí]} \tag{4.6}
+\]
+
+% Ecuación 4.7
+\[
+\text{[Escribir aquí]} \tag{4.7}
+\]
+
+% Ecuación 4.8
+\[
+\text{[Escribir aquí]} \tag{4.8}
+\]
+
+% Ecuación 4.9
+\[
+\text{[Escribir aquí]} \tag{4.9}
+\]
+
+% Ecuación 4.10
+\[
+\text{[Escribir aquí]} \tag{4.10}
+\]
+
+% Ecuación 4.11
+\[
+\text{[Escribir aquí]} \tag{4.11}
+\]
+
+% Ecuación 4.12
+\[
+\text{[Escribir aquí]} \tag{4.12}
+\]
+
+\vspace{1cm}
+\section*{Subsistema 5 — Pista de Baile ($D_C$) — M/M/$\infty$}
+
+% Ecuación 5.1
+\[
+\text{[Escribir aquí]} \tag{5.1}
+\]
+
+% Ecuación 5.2
+\[
+\text{[Escribir aquí]} \tag{5.2}
+\]
+
+% Ecuación 5.3
+\[
+\text{[Escribir aquí]} \tag{5.3}
+\]
+
+% Ecuación 5.4
+\[
+\text{[Escribir aquí]} \tag{5.4}
+\]
+
+% Ecuación 5.5
+\[
+\text{[Escribir aquí]} \tag{5.5}
+\]
+
+% Ecuación 5.6
+\[
+\text{[Escribir aquí]} \tag{5.6}
+\]
+
+% Ecuación 5.7
+\[
+\text{[Escribir aquí]} \tag{5.7}
+\]
+
+% Ecuación 5.8
+\[
+\text{[Escribir aquí]} \tag{5.8}
+\]
+
+% Ecuación 5.9
+\[
+\text{[Escribir aquí]} \tag{5.9}
+\]
+
+% Ecuación 5.10
+\[
+\text{[Escribir aquí]} \tag{5.10}
+\]
+
+% Ecuación 5.11
+\[
+\text{[Escribir aquí]} \tag{5.11}
+\]
+
+% Ecuación 5.12
+\[
+\text{[Escribir aquí]} \tag{5.12}
+\]
+
+\vspace{1cm}
+\section*{Subsistema 6 — Barra ($C_C$) — M/M/1}
+
+% Ecuación 6.1
+\[
+\text{[Escribir aquí]} \tag{6.1}
+\]
+
+% Ecuación 6.2
+\[
+\text{[Escribir aquí]} \tag{6.2}
+\]
+
+% Ecuación 6.3
+\[
+\text{[Escribir aquí]} \tag{6.3}
+\]
+
+% Ecuación 6.4
+\[
+\text{[Escribir aquí]} \tag{6.4}
+\]
+
+% Ecuación 6.5
+\[
+\text{[Escribir aquí]} \tag{6.5}
+\]
+
+% Ecuación 6.6
+\[
+\text{[Escribir aquí]} \tag{6.6}
+\]
+
+% Ecuación 6.7
+\[
+\text{[Escribir aquí]} \tag{6.7}
+\]
+
+% Ecuación 6.8
+\[
+\text{[Escribir aquí]} \tag{6.8}
+\]
+
+% Ecuación 6.9
+\[
+\text{[Escribir aquí]} \tag{6.9}
+\]
+
+% Ecuación 6.10
+\[
+\text{[Escribir aquí]} \tag{6.10}
+\]
+
+% Ecuación 6.11
+\[
+\text{[Escribir aquí]} \tag{6.11}
+\]
+
+% Ecuación 6.12
+\[
+\text{[Escribir aquí]} \tag{6.12}
+\]
+
+\vspace{1cm}
+\section*{Subsistema 7 — Barra ($C_C 2$) — M/M/1}
+
+% Ecuación 7.1
+\[
+\text{[Escribir aquí]} \tag{7.1}
+\]
+
+% Ecuación 7.2
+\[
+\text{[Escribir aquí]} \tag{7.2}
+\]
+
+% Ecuación 7.3
+\[
+\text{[Escribir aquí]} \tag{7.3}
+\]
+
+% Ecuación 7.4
+\[
+\text{[Escribir aquí]} \tag{7.4}
+\]
+
+% Ecuación 7.5
+\[
+\text{[Escribir aquí]} \tag{7.5}
+\]
+
+% Ecuación 7.6
+\[
+\text{[Escribir aquí]} \tag{7.6}
+\]
+
+% Ecuación 7.7
+\[
+\text{[Escribir aquí]} \tag{7.7}
+\]
+
+% Ecuación 7.8
+\[
+\text{[Escribir aquí]} \tag{7.8}
+\]
+
+% Ecuación 7.9
+\[
+\text{[Escribir aquí]} \tag{7.9}
+\]
+
+% Ecuación 7.10
+\[
+\text{[Escribir aquí]} \tag{7.10}
+\]
+
+% Ecuación 7.11
+\[
+\text{[Escribir aquí]} \tag{7.11}
+\]
+
+% Ecuación 7.12
+\[
+\text{[Escribir aquí]} \tag{7.12}
+\]
+
+\vspace{1cm}
+\section*{Subsistema 8 — Barra ($C_C 3$) — M/M/1}
+
+% Ecuación 8.1
+\[
+\text{[Escribir aquí]} \tag{8.1}
+\]
+
+% Ecuación 8.2
+\[
+\text{[Escribir aquí]} \tag{8.2}
+\]
+
+% Ecuación 8.3
+\[
+\text{[Escribir aquí]} \tag{8.3}
+\]
+
+% Ecuación 8.4
+\[
+\text{[Escribir aquí]} \tag{8.4}
+\]
+
+% Ecuación 8.5
+\[
+\text{[Escribir aquí]} \tag{8.5}
+\]
+
+% Ecuación 8.6
+\[
+\text{[Escribir aquí]} \tag{8.6}
+\]
+
+% Ecuación 8.7
+\[
+\text{[Escribir aquí]} \tag{8.7}
+\]
+
+% Ecuación 8.8
+\[
+\text{[Escribir aquí]} \tag{8.8}
+\]
+
+% Ecuación 8.9
+\[
+\text{[Escribir aquí]} \tag{8.9}
+\]
+
+% Ecuación 8.10
+\[
+\text{[Escribir aquí]} \tag{8.10}
+\]
+
+% Ecuación 8.11
+\[
+\text{[Escribir aquí]} \tag{8.11}
+\]
+
+% Ecuación 8.12
+\[
+\text{[Escribir aquí]} \tag{8.12}
+\]
+
+\end{document}

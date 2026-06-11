@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/capturepanel.tsx","./src/components/controlbar.tsx","./src/components/exportpanel.tsx","./src/components/metricstable.tsx","./src/components/periodhistory.tsx","./src/components/subsystempool.tsx","./src/lib/api.ts","./src/types/domain.ts"],"version":"5.9.3"}

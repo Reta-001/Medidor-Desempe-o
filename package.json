@@ -1,0 +1,20 @@
+{
+  "name": "monitor-operacional-eventos-discretos",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Monitor operacional de eventos discretos para red de colas multicanal y exportacion PROMODEL.",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -n API,SPA -c cyan,magenta \"npm:dev --workspace server\" \"npm:dev --workspace client\"",
+    "build": "npm run build --workspaces",
+    "db:migrate": "npm --workspace server run db:migrate",
+    "mcp": "npm --workspace server run mcp",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

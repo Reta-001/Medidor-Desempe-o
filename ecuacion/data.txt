@@ -1,0 +1,49 @@
+Toma de datos sistema:
+[Nota: Estos datos fueron obtenidos utilizando el software "Monitor Operacional" en el horario de 11:00 PM a 1:00 AM]
+
+1. Subsistema Entrada (M/M/2 →Entrada (S_C))
+
+* Tasa de llegada λ: 87 personas/hora
+* Tasa de servicio µ: 78 personas/hora (por servidor)
+  → ρ = 87/(2×78) = 0.56 ✓
+
+2. Subsistema Barra (M/M/1 →Barra (C_C))
+
+Barra C₁:
+* Tasa de llegada λ: 29 personas/hora
+* Tasa de servicio µ: 37 personas/hora
+  → ρ = 29/37 = 0.78 ✓
+
+Barra C₂:
+* Tasa de llegada λ: 26 personas/hora
+* Tasa de servicio µ: 33 personas/hora
+  → ρ = 26/33 = 0.79 ✓
+
+Barra C₃:
+* Tasa de llegada λ: 23 personas/hora
+* Tasa de servicio µ: 29 personas/hora
+  → ρ = 23/29 = 0.79 ✓
+
+3. Subsistema Guardarropa (M/M/3 →Guardarropa (A_C))
+
+* Tasa de llegada λ: 38 personas/hora
+* Tasa de servicio µ: 43 personas/hora (por servidor)
+  → ρ = 38/(3×43) = 0.29 ✓
+
+4. Subsistema Pista de baile (M/M/∞ →Pista de baile (D_C))
+
+* Tasa de llegada λ: 93 personas/hora
+* Tasa de servicio µ: 1.12 personas/hora
+  → L = λ/µ = 83.04 personas promedio en pista ✓
+
+5. Subsistema Baños (M/M/7 →Baños (B_C))
+
+Baños grupo 1 (B₁–B₇):
+* Tasa de llegada λ: 47 personas/hora
+* Tasa de servicio µ: 19 personas/hora (por cubículo)
+  → ρ = 47/(7×19) = 0.35 ✓
+
+Baños grupo 2 (B₈–B₁₄):
+* Tasa de llegada λ: 42 personas/hora
+* Tasa de servicio µ: 11 personas/hora (por cubículo)
+  → ρ = 42/(7×11) = 0.55 ✓
