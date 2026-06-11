@@ -174,9 +174,24 @@ export function PeriodHistory({ periods, onDelete }: PeriodHistoryProps) {
                       <thead className="bg-ink text-white">
                         <tr>
                           <th className="px-4 py-2.5">Subsistema</th>
-                          <th className="px-4 py-2.5">T</th>
-                          <th className="px-4 py-2.5">λ (Tasa de llegada)</th>
-                          <th className="px-4 py-2.5">μ (Tasa de servicio)</th>
+                          <th
+                            className="px-4 py-2.5 cursor-help"
+                            title="Tiempo de observación acumulado en segundos (T)"
+                          >
+                            T
+                          </th>
+                          <th
+                            className="px-4 py-2.5 cursor-help"
+                            title={`Tasa de llegada (λ = A / T) donde:\n• A: Total de arribos registrados en el subsistema\n• T: Tiempo de observación en segundos (T)`}
+                          >
+                            λ (Tasa de llegada: A / T)
+                          </th>
+                          <th
+                            className="px-4 py-2.5 cursor-help"
+                            title={`Tasa de servicio (μ = 1 / S) donde:\n• S: Tiempo promedio de servicio (tiempo neto de atención por cliente, sin fila)\n• μ: Clientes que cada servidor puede atender por segundo`}
+                          >
+                            μ (Tasa de servicio: 1 / S)
+                          </th>
                         </tr>
                       </thead>
                       <tbody>

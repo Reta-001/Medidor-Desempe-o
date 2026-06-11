@@ -54,9 +54,33 @@ export function MetricsTable({ metrics, globalMetric, periodStartMs, periodActiv
           <thead className="bg-ink text-white">
             <tr>
               <th className="px-3 py-2">Subsistema</th>
-              <th className="px-3 py-2">T</th>
-              <th className="px-3 py-2">λ</th>
-              <th className="px-3 py-2">μ</th>
+              <th
+                className="px-3 py-2 cursor-help"
+                title="Tiempo de observación acumulado en segundos (T)"
+              >
+                <div className="flex flex-col">
+                  <span>T</span>
+                  <span className="text-[10px] font-normal text-slate-300">segundos</span>
+                </div>
+              </th>
+              <th
+                className="px-3 py-2 cursor-help"
+                title={`Tasa de llegada (λ = A / T) donde:\n• A: Total de arribos registrados en el subsistema\n• T: Tiempo de observación en segundos (T)`}
+              >
+                <div className="flex flex-col">
+                  <span>λ</span>
+                  <span className="text-[10px] font-normal text-slate-300">A / T</span>
+                </div>
+              </th>
+              <th
+                className="px-3 py-2 cursor-help"
+                title={`Tasa de servicio (μ = 1 / S) donde:\n• S: Tiempo promedio de servicio (tiempo neto de atención por cliente, sin fila)\n• μ: Clientes que cada servidor puede atender por segundo`}
+              >
+                <div className="flex flex-col">
+                  <span>μ</span>
+                  <span className="text-[10px] font-normal text-slate-300">1 / S</span>
+                </div>
+              </th>
             </tr>
           </thead>
           <tbody>
