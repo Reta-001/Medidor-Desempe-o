@@ -77,6 +77,7 @@ export interface PeriodSummary {
     id_subsistema: string;
     tiempo_observacion_t: number;
     total_a: number;
+    total_c: number;
     tasa_llegada_lambda: number;
     tasa_servicio_mu: number | null;
   }[];

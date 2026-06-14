@@ -50,6 +50,7 @@ function mapMetric(row: Record<string, unknown>): PeriodSummary["metricas"][numb
     id_subsistema: String(row.id_subsistema),
     tiempo_observacion_t: Number(row.tiempo_observacion_t),
     total_a: Number(row.total_a),
+    total_c: Number(row.total_c),
     tasa_llegada_lambda: Number(row.tasa_llegada_lambda),
     tasa_servicio_mu: row.tasa_servicio_mu === null ? null : Number(row.tasa_servicio_mu)
   };
@@ -247,7 +248,7 @@ export const api = {
     const { data, error } = await supabase
       .from("periodos_observacion")
       .select(
-        "id_periodo,nombre,timestamp_inicio,timestamp_fin,estado,metricas_periodo(id_subsistema,tiempo_observacion_t,total_a,tasa_llegada_lambda,tasa_servicio_mu)"
+        "id_periodo,nombre,timestamp_inicio,timestamp_fin,estado,metricas_periodo(id_subsistema,tiempo_observacion_t,total_a,total_c,tasa_llegada_lambda,tasa_servicio_mu)"
       )
       .order("timestamp_inicio", { ascending: false });
     assertNoError(error);

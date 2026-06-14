@@ -206,10 +206,16 @@ export function PeriodHistory({ periods, onDelete }: PeriodHistoryProps) {
                             <td className="px-4 py-2.5 font-mono">
                               {formatDuration(metric.tiempo_observacion_t)}
                             </td>
-                            <td className="px-4 py-2.5">
+                            <td
+                              className="px-4 py-2.5 cursor-help"
+                              title={`Arribos totales (A): ${metric.total_a} personas`}
+                            >
                               {formatRate(metric.tasa_llegada_lambda)}
                             </td>
-                            <td className="px-4 py-2.5">
+                            <td
+                              className="px-4 py-2.5 cursor-help"
+                              title={`Salidas totales (C): ${metric.total_c} personas`}
+                            >
                               {formatRate(metric.tasa_servicio_mu)}
                             </td>
                           </tr>

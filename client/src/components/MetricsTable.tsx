@@ -99,8 +99,18 @@ export function MetricsTable({ metrics, globalMetric, periodStartMs, periodActiv
                       : metric.tiempo_observacion_t * 1000
                   )}
                 </td>
-                <td className="px-3 py-2">{formatRate(metric.tasa_llegada_lambda)}</td>
-                <td className="px-3 py-2">{formatRate(metric.tasa_servicio_mu)}</td>
+                <td
+                  className="px-3 py-2 cursor-help font-medium text-slate-800"
+                  title={`Arribos totales (A): ${metric.total_a} personas`}
+                >
+                  {formatRate(metric.tasa_llegada_lambda)}
+                </td>
+                <td
+                  className="px-3 py-2 cursor-help font-medium text-slate-800"
+                  title={`Salidas totales (C): ${metric.total_c} personas`}
+                >
+                  {formatRate(metric.tasa_servicio_mu)}
+                </td>
               </tr>
             ))}
             {rows.length === 0 ? (
