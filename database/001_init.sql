@@ -75,7 +75,7 @@ DELETE FROM subsistemas WHERE id = 'AC';
 
 INSERT INTO subsistemas (id, nombre, configuracion_queues, capacidad_servidores)
 VALUES
-  ('SC', 'Entrada', 'M/M/2', 2),
+  ('SC', 'Entrada', 'M/M/1', 1),
   ('BC1', 'Banos 1', 'M/M/7', 7),
   ('BC2', 'Banos 2', 'M/M/7', 7),
   ('AC1', 'Guardarropa 1', 'M/M/1', 1),

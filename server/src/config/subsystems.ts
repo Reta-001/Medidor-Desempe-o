@@ -19,7 +19,7 @@ export interface SubsystemDefinition {
 }
 
 export const SUBSYSTEMS: SubsystemDefinition[] = [
-  { id: "SC", name: "Entrada", queueModel: "M/M/2", servers: 2, infiniteServers: false },
+  { id: "SC", name: "Entrada", queueModel: "M/M/1", servers: 1, infiniteServers: false },
   { id: "BC1", name: "Banos 1", queueModel: "M/M/7", servers: 7, infiniteServers: false },
   { id: "BC2", name: "Banos 2", queueModel: "M/M/7", servers: 7, infiniteServers: false },
   { id: "AC1", name: "Guardarropa 1", queueModel: "M/M/1", servers: 1, infiniteServers: false },

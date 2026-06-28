@@ -3,7 +3,7 @@ import { SUBSYSTEMS } from "../src/config/subsystems.js";
 import { computeSubsystemMetric } from "../src/analysis/operationalMath.js";
 
 describe("computeSubsystemMetric", () => {
-  it("calcula A, C, B, Wq, W y utilizacion para un M/M/2 simple", () => {
+  it("calcula A, C, B, Wq, W y utilizacion para un M/M/1 simple", () => {
     const sc = SUBSYSTEMS.find((subsystem) => subsystem.id === "SC");
     if (!sc) {
       throw new Error("SC no encontrado");
@@ -43,6 +43,6 @@ describe("computeSubsystemMetric", () => {
     expect(metric.tiempo_ocupado_B).toBe(3);
     expect(metric.Wq_tiempo_espera_cola).toBe(1);
     expect(metric.W_tiempo_sistema).toBe(4);
-    expect(metric.utilizacion_U).toBe(0.15);
+    expect(metric.utilizacion_U).toBe(0.3);
   });
 });

@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS public.metricas_periodo (
 
 INSERT INTO public.subsistemas (id, nombre, configuracion_queues, capacidad_servidores)
 VALUES
-  ('SC', 'Entrada', 'M/M/2', 2),
+  ('SC', 'Entrada', 'M/M/1', 1),
   ('BC1', 'Banos 1', 'M/M/7', 7),
   ('BC2', 'Banos 2', 'M/M/7', 7),
   ('AC', 'Guardarropa', 'M/M/3', 3),
