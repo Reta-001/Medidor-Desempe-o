@@ -1,11 +1,11 @@
 Toma de datos sistema:
 [Nota: Estos datos fueron obtenidos utilizando el software "Monitor Operacional" en el horario de 11:00 PM a 1:00 AM]
 
-1. Subsistema Entrada (M/M/2 →Entrada (S_C))
+1. Subsistema Entrada (M/M/1 →Entrada (S_C))
 
 * Tasa de llegada λ: 87 personas/hora
-* Tasa de servicio µ: 78 personas/hora (por servidor)
-  → ρ = 87/(2×78) = 0.56 ✓
+* Tasa de servicio µ: 78 personas/hora
+  → ρ = 87/78 = 1.12 (Inestable, la cola crece al infinito) ✗
 
 2. Subsistema Barra (M/M/1 →Barra (C_C))
 
